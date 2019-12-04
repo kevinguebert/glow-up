@@ -2,20 +2,20 @@ import React from 'react';
 import './App.css';
 import FacebookLoginButton from './FacebookLoginButton';
 import htmlToImage from 'html-to-image';
-import p0 from './snowman-op.svg';
-import p1 from './p1.svg';
-import p2 from './p2.svg';
-import p3 from './p3.svg';
-import p4 from './p4.svg';
-import p5 from './p5.svg';
-import p6 from './p6.svg';
-import p7 from './p7.svg';
-import p8 from './p8.svg';
-import p9 from './p9.svg';
-import p10 from './p10.svg';
-import logo from './logo.png';
-import facebook from './facebook.png';
-import twitter from './twitter.png';
+import p0 from './media/snowman-op.svg';
+import p1 from './media/p1.svg';
+import p2 from './media/p2.svg';
+import p3 from './media/p3.svg';
+import p4 from './media/p4.svg';
+import p5 from './media/p5.svg';
+import p6 from './media/p6.svg';
+import p7 from './media/p7.svg';
+import p8 from './media/p8.svg';
+import p9 from './media/p9.svg';
+import p10 from './media/p10.svg';
+import logo from './media/logo.png';
+import facebook from './media/facebook.png';
+import twitter from './media/twitter.png';
 
 class App extends React.Component {
   state = {

@@ -22,7 +22,7 @@ class FacebookLoginButton extends Component {
 
     window.fbAsyncInit = () => {
       FB.init({
-        appId: '428076311459548',//Change with your Facebook app id
+        appId: '2973088362710783',//Change with your Facebook app id
         autoLogAppEvents: true,
         xfbml: true,
         version: 'v5.0'

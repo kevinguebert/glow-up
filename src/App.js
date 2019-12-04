@@ -23,7 +23,8 @@ class App extends React.Component {
     newProfileImage: null,
     imgSrc: null,
     bckgrnd: '',
-    showHow: false
+    showHow: false,
+    showError: false
   }
   componentDidMount() {
     let bckgrnd = this.getRandomBackground()
@@ -32,21 +33,24 @@ class App extends React.Component {
     })
   }
   setProfilePhotos = data => {
-    console.log(data);
+    if (data == null) {
+      this.setState({showError: true})
 
-    this.setState({
-      newProfileImage: data.newProfilePicture.images[0].source,
-      oldProfileImage: data.oldProfilePictures[data.oldProfilePictures.length - 1].images[0].source,
-      accessToken: data.accessToken
-    })
+    } else {
+      this.setState({
+        newProfileImage: data.newProfilePicture.images[0].source,
+        oldProfileImage: data.oldProfilePictures.images[0].source,
+        accessToken: data.accessToken
+      })
 
-    const oldImg = this.refs.oldImage
-    const newImg = this.refs.newImage
+      const oldImg = this.refs.oldImage
+      const newImg = this.refs.newImage
 
-    const that = this;
-    oldImg.onload = () => {
-      newImg.onload = () => {
-        that.renderImage();
+      const that = this;
+      oldImg.onload = () => {
+        newImg.onload = () => {
+          that.renderImage();
+        }
       }
     }
   }
@@ -75,9 +79,7 @@ class App extends React.Component {
   }
 
   render() {
-    let { oldProfileImage, newProfileImage, imgSrc, bckgrnd, showHow } = this.state;
-    // oldProfileImage = "https://scontent.xx.fbcdn.net/v/t1.0-9/1918717_305833920639_4779934_n.jpg?_nc_cat=100&_nc_ohc=SFytBfLwYuoAQn4lHO0N2pOduu0xO8tOW0hYGYzRpmdcNK0JdrHSgF80g&_nc_ht=scontent.xx&oh=cab2990cff23c2698e242fdcade3af13&oe=5E8A8A26";
-    // newProfileImage = "https://scontent.xx.fbcdn.net/v/t31.0-8/21994378_10159318624840640_251949960033879695_o.jpg?_nc_cat=111&_nc_ohc=ruIejebQl2sAQmGA3jqW7HFxOjFhhtDi5UhKQfsHLdCUfCLZOAufyIiuw&_nc_ht=scontent.xx&oh=b4a8f9f71deb3c3831fbc8c008fbeef2&oe=5E80D3F9"
+    let { oldProfileImage, newProfileImage, imgSrc, bckgrnd, showHow, showError } = this.state;
     return (
       <div className='app' style={{ backgroundImage: `url(${bckgrnd})`, height: '100%' }}>
         <section className="hero">
@@ -110,7 +112,7 @@ class App extends React.Component {
                   </div>
                   <div>
                     {imgSrc &&
-                      <div>
+                      <div className="share-btns">
                         <a href={imgSrc} download className="btn btn-2 btn-2c">Save & Share</a>
                         <br />
                         <button onClick={() => this.setState({ showHow: !this.state.showHow })} className="btn btn-3 btn-3c">How to Share?</button>
@@ -121,6 +123,19 @@ class App extends React.Component {
               )}
           </div>
         </section>
+        {showError &&
+          <div className="error">
+            <h2 style={{
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              fontWeight: '700'
+            }}>Uhoh</h2>
+            <p style={{lineHeight: '1.0'}}>Dang, were unable to find your profile photos. <br />Here are some potential reasons why:</p>
+            <p>1. The default "Profile Pictures" album was renamed or doesn't exist</p>
+            <p>2. You don't have any profile photos going back that far</p>
+            <p>Think it is something else? Email kevin@harvy.app</p>
+          </div>
+        }
         {showHow &&
           <div className="how">
             <h2 style={{
@@ -140,14 +155,6 @@ class App extends React.Component {
             <p>3. Upload and enjoy!</p>
           </div>
         }
-        {/* <section className="hero">
-          <div className="hero-inner" style={{width: '50%'}}>
-            <h2>About</h2>
-            <p>Connect your Facebook account to retrieve your profile picture from the beginning of the decade and your current one. That is as simple as it gets - no gimmicks, no user profiles, no accounts.</p>
-            <h3>Data Policy</h3>
-            <p>We don't store anything. Literally nothing. We do have analytics to </p>
-          </div>
-        </section> */}
 
       </div >
     )

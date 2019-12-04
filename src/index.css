@@ -211,6 +211,14 @@ p {
 	top: 6px;
 }
 
+.share-btns {
+  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 1s; /* Firefox < 16 */
+   -ms-animation: fadein 1s; /* Internet Explorer */
+    -o-animation: fadein 1s; /* Opera < 12.1 */
+       animation: fadein 1s;
+}
+
 .how {
   position: absolute;
   -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
@@ -237,6 +245,35 @@ p {
 }
 
 .how h2 {
+  font-size: 1.2em;
+}
+
+.error {
+  position: absolute;
+  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 1s; /* Firefox < 16 */
+   -ms-animation: fadein 1s; /* Internet Explorer */
+    -o-animation: fadein 1s; /* Opera < 12.1 */
+       animation: fadein 1s;
+  right: 0;
+  background: #AD2F3E;
+  color: #fff;
+  top: 0;
+  padding: 20px;
+  border-radius: 8px;
+  border-top-right-radius: 0px;
+}
+
+.error p, .error h2 {
+  color: #fff;
+}
+
+.error p {
+  font-size: 0.9em;
+  line-height: 0.9em;
+}
+
+.error h2 {
   font-size: 1.2em;
 }
 

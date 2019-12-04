@@ -70,21 +70,71 @@ class FacebookLoginButton extends Component {
           profilePicturesAlbum = album;
         }
       });
-      this.getOldProfilePictures(profilePicturesAlbum);
+      if (profilePicturesAlbum != null) {
+        this.getOldProfilePictures(profilePicturesAlbum);
+      } else {
+        this.props.setProfilePhotos(null);
+      }
     });
   }
 
   getOldProfilePictures(album) {
     FB.api(`/${album.id}/photos?since=1257033600&until=1270080000&fields=images,name,link,created_time`, response => {
-      this.setState({
-        oldProfilePictures: response.data
-      });
-      FB.api(`/${album.id}/photos?fields=images,name,link,created_time`, newResponse => {
+      console.log(response.data);
+      if (response.data.length > 0) {
+        let pics = response.data;
+        let closest = pics[0];
+        let closestTime = Date.parse(closest.created_time);
+        let jan = Date.parse(new Date(2010, 1, 1));
+        let diff2 = Math.floor(( closestTime - jan) / 86400000);
+        for (var i = 0; i < pics.length; i++) {
+          let day = Date.parse(pics[i].created_time)
+          let diff1 = Math.floor(( day - jan) / 86400000);
+          if (diff1 < diff2) {
+            closest = pics[i];
+            diff2 = diff1 
+          }
+        }
         this.setState({
-          newProfilePicture: newResponse.data.shift()
+          oldProfilePictures: closest
+        });
+        FB.api(`/${album.id}/photos?fields=images,name,link,created_time`, newResponse => {
+          this.setState({
+            newProfilePicture: newResponse.data.shift()
+          })
+          this.props.setProfilePhotos(this.state);
         })
-        this.props.setProfilePhotos(this.state);
-      })
+      } else {
+          FB.api(`/${album.id}/photos?since=1230768000&until=1270080000&fields=images,name,link,created_time`, response => {
+            if (response.data.length > 0) {
+              let pics = response.data;
+              let closest = pics[0];
+              let closestTime = Date.parse(closest.created_time);
+              let jan = Date.parse(new Date(2010, 1, 1));
+              let diff2 = Math.floor(( closestTime - jan) / 86400000);
+              for (var i = 0; i < pics.length; i++) {
+                let day = Date.parse(pics[i].created_time)
+                let diff1 = Math.floor(( day - jan) / 86400000);
+                if (diff1 < diff2) {
+                  closest = pics[i];
+                  diff2 = diff1 
+                }
+              }
+              this.setState({
+                oldProfilePictures: closest
+              });
+              FB.api(`/${album.id}/photos?fields=images,name,link,created_time`, newResponse => {
+                this.setState({
+                  newProfilePicture: newResponse.data.shift()
+                })
+                this.props.setProfilePhotos(this.state);
+              })
+            } else {
+              this.props.setProfilePhotos(null);
+            }
+          });
+
+      }
     })
   }
 

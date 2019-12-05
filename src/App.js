@@ -77,6 +77,7 @@ class App extends React.Component {
 
     htmlToImage.toJpeg(node)
       .then(function (dataUrl) {
+        console.log('image generated');
         var img = new Image();
         img.src = dataUrl;
         that.setState({
@@ -101,8 +102,9 @@ class App extends React.Component {
                 <p>Compare your profile picture from 10 years ago to now.</p>
                 <br />
                 <FacebookLoginButton setProfilePhotos={this.setProfilePhotos} />
-                {counter != 0 &&
-                  <p># of Glow Ups: {counter}</p>
+                <br />
+                {counter !== 0 &&
+                  <small># of Glow Ups: {counter}</small>
                 }
               </div> :
               (
@@ -119,17 +121,21 @@ class App extends React.Component {
                       <h2 className="date-right">2019</h2>
                       <div className="promotion">
                         <div className="promotion-inner">
-                          <h2>glowup.lol</h2>
+                          <h2>goglowup.com</h2>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div>
-                    {imgSrc &&
+                    {imgSrc ?
                       <div className="share-btns">
                         <a href={imgSrc} download className="btn btn-2 btn-2c">Save & Share</a>
                         <br />
                         <button onClick={() => this.setState({ showHow: !this.state.showHow })} className="btn btn-3 btn-3c">How to Share?</button>
+                      </div>
+                    : 
+                      <div className="share-btns">
+                        <p>Generating image...</p>
                       </div>
                     }
                   </div>
@@ -171,16 +177,24 @@ class App extends React.Component {
         }
         {showAbout &&
         <div className="how">
+          <button className="btn" style={{position: 'absolute', right: '10px', fontSize: '0.8em'}} onClick={() => this.setState({showAbout: false})}>Close</button>
           <h2 style={{
               textTransform: 'uppercase',
               letterSpacing: '1px',
               fontWeight: '700'
             }}>About</h2>
-            <p>Glow up is as simple as it can get. Quickly connect your Facebook account and retrieve your photos side by side.</p>
-            <p>Curious about privacy? We are too. We store <strong>nothing.</strong> Everything is done right here in your browser</p>
+            <p>Glow up is as simple as it can get.</p><p>Quickly connect your Facebook account and retrieve your photos side by side.</p>
+            <hr />
+            <p>Curious about privacy?</p><p>We are too. We store <i>nothing.</i> Everything is done right here in your browser.</p>
+            <p>Don't believe us? Refresh the page!</p>
+            <hr />
+            <p>Have more questions? Email kevin@harvy.app</p>
           </div>
         }
         <div className="footer">
+          {counter !== 0 &&
+            <a className="btn">#{counter}</a>
+          }
           <button onClick={() => this.setState({showAbout: true})} className="btn">About</button>
           <a href="https://www.buymeacoffee.com/J5qYUau" target="_blank" className="btn">Built with ☕️ by Kevin</a>
 

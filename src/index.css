@@ -329,3 +329,27 @@ p {
 small {
   font-weight: bold;
 }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: right;
+  /* padding: 10px; */
+}
+
+.footer a {
+  padding: 10px;
+}
+
+.footer button, .footer a {
+  color: #464444;  
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.footer button:hover, .footer a:hover {
+  text-decoration: underline;
+}

@@ -16,6 +16,7 @@ import p10 from './media/p10.svg';
 import logo from './media/logo.png';
 import facebook from './media/facebook.png';
 import twitter from './media/twitter.png';
+import countapi from 'countapi-js';
 
 class App extends React.Component {
   state = {
@@ -24,12 +25,18 @@ class App extends React.Component {
     imgSrc: null,
     bckgrnd: '',
     showHow: false,
-    showError: false
+    showError: false,
+    showAbout: false,
+    counter: 0,
   }
   componentDidMount() {
     let bckgrnd = this.getRandomBackground()
     this.setState({
       bckgrnd
+    })
+    countapi.get('glow-up', 'glow-up').then(result => {
+      console.log('a', result);
+      this.setState({counter: result.value});
     })
   }
   setProfilePhotos = data => {
@@ -50,6 +57,10 @@ class App extends React.Component {
       oldImg.onload = () => {
         newImg.onload = () => {
           that.renderImage();
+          countapi.hit('glow-up', 'glow-up').then((result) => {
+            console.log('res', result);
+            this.setState({counter: result.value})
+          })
         }
       }
     }
@@ -79,7 +90,7 @@ class App extends React.Component {
   }
 
   render() {
-    let { oldProfileImage, newProfileImage, imgSrc, bckgrnd, showHow, showError } = this.state;
+    let { oldProfileImage, newProfileImage, imgSrc, bckgrnd, showHow, showError, showAbout, counter } = this.state;
     return (
       <div className='app' style={{ backgroundImage: `url(${bckgrnd})`, height: '100%' }}>
         <section className="hero">
@@ -90,6 +101,9 @@ class App extends React.Component {
                 <p>Compare your profile picture from 10 years ago to now.</p>
                 <br />
                 <FacebookLoginButton setProfilePhotos={this.setProfilePhotos} />
+                {counter != 0 &&
+                  <p># of Glow Ups: {counter}</p>
+                }
               </div> :
               (
                 <div>
@@ -155,6 +169,22 @@ class App extends React.Component {
             <p>3. Upload and enjoy!</p>
           </div>
         }
+        {showAbout &&
+        <div className="how">
+          <h2 style={{
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              fontWeight: '700'
+            }}>About</h2>
+            <p>Glow up is as simple as it can get. Quickly connect your Facebook account and retrieve your photos side by side.</p>
+            <p>Curious about privacy? We are too. We store <strong>nothing.</strong> Everything is done right here in your browser</p>
+          </div>
+        }
+        <div className="footer">
+          <button onClick={() => this.setState({showAbout: true})} className="btn">About</button>
+          <a href="https://www.buymeacoffee.com/J5qYUau" target="_blank" className="btn">Built with ☕️ by Kevin</a>
+
+        </div>
 
       </div >
     )
